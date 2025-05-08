@@ -9,8 +9,8 @@ namespace From_Zero_to_Robert_De_Niro
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.InputEncoding = System.Text.Encoding.UTF8;
-            
 
+            Console.Clear();
             while (true)
             {
                 
