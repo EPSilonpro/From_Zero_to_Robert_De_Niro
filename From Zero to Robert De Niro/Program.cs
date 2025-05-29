@@ -14,7 +14,7 @@ namespace From_Zero_to_Robert_De_Niro
             while (true)
             {
                 
-                Console.WriteLine("Вітаю! Я ботяра є...на! Обери команду! Слава Скайнет! Термінатор ЛОХ! Джон Коннор друг ЛОХА!");
+                Console.WriteLine("Вітаю! Я бот-помічник! Обери команду! Слава Скайнет!");
                 Console.WriteLine("1 - Перевірити число на парність");
                 Console.WriteLine("2 - Таблиця множення числа");
                 Console.WriteLine("3 - Порахувати суму чисел");
@@ -132,10 +132,16 @@ namespace From_Zero_to_Robert_De_Niro
         static void ReverseName()
             
         {
-           
+
             Console.Write("Введіть ім’я: ");
             string name = Console.ReadLine();
-            string reversed = new string(name.Reverse().ToArray());
+            string reversed = "";
+
+            for (int i = name.Length - 1; i >= 0; i--)
+            {
+                reversed += name[i];
+            }
+
             Console.WriteLine("Задом наперед: " + reversed);
         }
         }
