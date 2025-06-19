@@ -5,6 +5,8 @@ namespace From_Zero_to_Robert_De_Niro
 {
     internal class Program
     {
+        static Dictionary<string, string> contacts = new Dictionary<string, string>();
+
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -19,6 +21,8 @@ namespace From_Zero_to_Robert_De_Niro
                 Console.WriteLine("3 - Порахувати суму чисел");
                 Console.WriteLine("4 - Вивести моє ім’я задом наперед");
                 Console.WriteLine("5 - Виконати бінарний пошук");
+                Console.WriteLine("6 - Бінарний пошук у введеному масиві");
+                Console.WriteLine("7 - Контакти (додавання, пошук, перегляд, видалення)");
                 Console.WriteLine("0 - Вийти з програми");
                 Console.Write("Введіть свій вибір: ");
                 string choice = Console.ReadLine();
@@ -38,8 +42,15 @@ namespace From_Zero_to_Robert_De_Niro
                         ReverseName();
                         break;
                     case "5":
-                        RunBinarySearch(); 
+                        RunBinarySearch();
                         break;
+                    case "6":
+                        CustomBinarySearch();
+                        break;
+                    case "7":
+                        ManageContacts();
+                        break;
+
                     case "0":
                         Console.WriteLine("До побачення!");
                         return;
@@ -141,10 +152,10 @@ namespace From_Zero_to_Robert_De_Niro
             Console.WriteLine("Задом наперед: " + reversed);
         }
 
-        
+
         static void RunBinarySearch()
         {
-            int[][] arrays = new int[][]
+            int[][] testArrays = new int[][]
             {
                 new int[] { 1, 3, 5, 7, 9 },
                 new int[] { -10, -5, 0, 5, 10, 15 },
@@ -153,61 +164,121 @@ namespace From_Zero_to_Robert_De_Niro
                 new int[] { -20, -10, 0, 10, 20, 30, 40, 50, 60 }
             };
 
-            Console.WriteLine("Оберіть масив для пошуку:");
-            for (int i = 0; i < arrays.Length; i++)
-            {
-                Console.WriteLine($"{i + 1}: {string.Join(", ", arrays[i])}");
-            }
+            Console.WriteLine("Оберіть масив:");
+            for (int i = 0; i < testArrays.Length; i++)
+                Console.WriteLine($"{i + 1}: [{string.Join(", ", testArrays[i])}]");
 
-            int arrayIndex;
-            while (!int.TryParse(Console.ReadLine(), out arrayIndex) || arrayIndex < 1 || arrayIndex > arrays.Length)
-            {
-                Console.Write("Невірний вибір. Введіть число від 1 до 5: ");
-            }
+            int index;
+            while (!int.TryParse(Console.ReadLine(), out index) || index < 1 || index > testArrays.Length)
+                Console.Write("Некоректний вибір. Спробуйте ще раз: ");
 
-            int[] selectedArray = arrays[arrayIndex - 1];
-
+            int[] array = testArrays[index - 1];
             Console.Write("Введіть число для пошуку: ");
             int target;
             while (!int.TryParse(Console.ReadLine(), out target))
-            {
                 Console.Write("Це не число. Спробуйте ще раз: ");
-            }
 
-            int result = BinarySearchAlgorithm(selectedArray, target);
-
-            if (result != -1)
-            {
-                Console.WriteLine($"Значення {target} має індекс {result} у масиві.");
-            }
-            else
-            {
-                Console.WriteLine($"Значення {target} не знайдено.");
-            }
+            int result = BinarySearchAlgorithm(array, target);
+            Console.WriteLine(result != -1 ? $"Знайдено на позиції {result}." : "Елемент не знайдено.");
         }
 
-       
+        static void CustomBinarySearch()
+        {
+            Console.Write("Введіть числа через пробіл: ");
+            string[] input = Console.ReadLine().Split();
+            int[] array = new int[input.Length];
+            for (int i = 0; i < input.Length; i++)
+            {
+                while (!int.TryParse(input[i], out array[i]))
+                {
+                    Console.Write($"'{input[i]}' не є числом. Введіть ще раз: ");
+                    input[i] = Console.ReadLine();
+                }
+            }
+            
+            Array.Sort(array);
+            Console.Write("Введіть число для пошуку: ");
+            int target;
+            while (!int.TryParse(Console.ReadLine(), out target))
+            Console.Write("Це не число. Спробуйте ще раз: ");
+
+            int result = BinarySearchAlgorithm(array, target);
+            Console.WriteLine(result != -1 ? $"Знайдено на позиції {result}." : "Елемент не знайдено.");
+        }
+
         static int BinarySearchAlgorithm(int[] array, int target)
         {
-            int left = 0;
-            int right = array.Length - 1;
-
+            int left = 0, right = array.Length - 1;
             while (left <= right)
             {
-                int middle = (left + right) / 2;
-
-                if (array[middle] == target)
-                    return middle;
-                else if (array[middle] < target)
-                    left = middle + 1;
-                else
-                    right = middle - 1;
+                int mid = (left + right) / 2;
+                if (array[mid] == target) return mid;
+                else if (array[mid] < target) left = mid + 1;
+                else right = mid - 1;
             }
-
             return -1;
         }
-    } 
+
+        static void ManageContacts()
+        {
+            while (true)
+            {
+                Console.WriteLine("\n--- Контактна книга ---");
+                Console.WriteLine("1 - Додати контакт");
+                Console.WriteLine("2 - Пошук контакту");
+                Console.WriteLine("3 - Показати всі контакти");
+                Console.WriteLine("4 - Видалити контакт");
+                Console.WriteLine("0 - Назад до головного меню");
+                Console.Write("Вибір: ");
+                string input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        Console.Write("Введіть ім’я: ");
+                        string name = Console.ReadLine();
+                        Console.Write("Введіть номер телефону: ");
+                        string phone = Console.ReadLine();
+                        contacts[name] = phone;
+                        Console.WriteLine("Контакт додано.");
+                        break;
+
+                    case "2":
+                        Console.Write("Введіть ім’я: ");
+                        string search = Console.ReadLine();
+                        if (contacts.ContainsKey(search))
+                            Console.WriteLine($"{search}: {contacts[search]}");
+                        else
+                            Console.WriteLine("Контакт не знайдено.");
+                        break;
+
+                    case "3":
+                        if (contacts.Count == 0)
+                            Console.WriteLine("Список порожній.");
+                        else
+                            foreach (var pair in contacts)
+                                Console.WriteLine($"{pair.Key}: {pair.Value}");
+                        break;
+
+                    case "4":
+                        Console.Write("Введіть ім’я: ");
+                        string del = Console.ReadLine();
+                        if (contacts.Remove(del))
+                            Console.WriteLine("Контакт видалено.");
+                        else
+                            Console.WriteLine("Контакт не знайдено.");
+                        break;
+
+                    case "0": return;
+
+                    default:
+                        Console.WriteLine("Невірний вибір.");
+                        break;
+                }
+            }
+        }
     }
+}
         
 
 
