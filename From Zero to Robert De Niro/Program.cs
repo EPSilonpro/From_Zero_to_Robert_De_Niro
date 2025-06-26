@@ -195,15 +195,18 @@ namespace From_Zero_to_Robert_De_Niro
                     input[i] = Console.ReadLine();
                 }
             }
-            
+             
+
             Array.Sort(array);
             Console.Write("Введіть число для пошуку: ");
             int target;
             while (!int.TryParse(Console.ReadLine(), out target))
-            Console.Write("Це не число. Спробуйте ще раз: ");
+            {
+                Console.Write("Це не число. Спробуйте ще раз: ");
 
-            int result = BinarySearchAlgorithm(array, target);
-            Console.WriteLine(result != -1 ? $"Знайдено на позиції {result}." : "Елемент не знайдено.");
+                int result = BinarySearchAlgorithm(array, target);
+                Console.WriteLine(result != -1 ? $"Знайдено на позиції {result}." : "Елемент не знайдено.");
+            }
         }
 
         static int BinarySearchAlgorithm(int[] array, int target)
