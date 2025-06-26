@@ -6,11 +6,19 @@ namespace From_Zero_to_Robert_De_Niro
     internal class Program
     {
         static Dictionary<string, string> contacts = new Dictionary<string, string>();
+        static List<string> tasks = new List<string> // список задач
+        {
+            "Start work",
+            "Create code",
+            "Do homework",
+            "Go to gym",
+            
+        };
 
         static void Main(string[] args)
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-            Console.InputEncoding = System.Text.Encoding.UTF8;
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.InputEncoding = Encoding.UTF8;
 
             Console.Clear();
             while (true)
@@ -23,34 +31,29 @@ namespace From_Zero_to_Robert_De_Niro
                 Console.WriteLine("5 - Виконати бінарний пошук");
                 Console.WriteLine("6 - Бінарний пошук у введеному масиві");
                 Console.WriteLine("7 - Контакти (додавання, пошук, перегляд, видалення)");
+                Console.WriteLine("8 - Знайти задачу (точний або частковий збіг)");
                 Console.WriteLine("0 - Вийти з програми");
                 Console.Write("Введіть свій вибір: ");
                 string choice = Console.ReadLine();
 
                 switch (choice)
                 {
-                    case "1":
-                        CheckEven();
+                    case "1": CheckEven(); 
                         break;
-                    case "2":
-                        ShowMultiplicationTable();
+                    case "2": ShowMultiplicationTable(); 
                         break;
-                    case "3":
-                        SumNumbers();
+                    case "3": SumNumbers(); 
                         break;
-                    case "4":
-                        ReverseName();
+                    case "4": ReverseName(); 
                         break;
-                    case "5":
-                        RunBinarySearch();
+                    case "5": RunBinarySearch(); 
                         break;
-                    case "6":
-                        CustomBinarySearch();
+                    case "6": CustomBinarySearch(); 
                         break;
-                    case "7":
-                        ManageContacts();
+                    case "7": ManageContacts(); 
                         break;
-
+                    case "8": ManageTasks(); 
+                        break;
                     case "0":
                         Console.WriteLine("До побачення!");
                         return;
@@ -69,22 +72,13 @@ namespace From_Zero_to_Robert_De_Niro
         {
             int num = 0;
             bool valid = false;
-
             while (!valid)
             {
                 Console.Write("Введіть число: ");
                 valid = int.TryParse(Console.ReadLine(), out num);
-
-                if (!valid)
-                {
-                    Console.WriteLine("Це не число. Спробуйте ще раз.");
-                }
+                if (!valid) Console.WriteLine("Це не число. Спробуйте ще раз.");
             }
-
-            if (num % 2 == 0)
-                Console.WriteLine("Число парне.");
-            else
-                Console.WriteLine("Число непарне.");
+            Console.WriteLine(num % 2 == 0 ? "Число парне." : "Число непарне.");
         }
 
         static void ShowMultiplicationTable()
@@ -92,48 +86,33 @@ namespace From_Zero_to_Robert_De_Niro
             Console.Write("Введіть число: ");
             string input = Console.ReadLine();
             int num;
-
             while (!int.TryParse(input, out num))
             {
                 Console.Write("Це не число. Спробуйте ще раз: ");
                 input = Console.ReadLine();
             }
-
             for (int i = 1; i <= 10; i++)
-            {
                 Console.WriteLine($"{num} × {i} = {num * i}");
-            }
         }
 
         static void SumNumbers()
         {
             Console.Write("Скільки чисел ви хочете додати? ");
-            string input = Console.ReadLine();
             int count;
-
-            while (!int.TryParse(input, out count) || count <= 0)
-            {
+            while (!int.TryParse(Console.ReadLine(), out count) || count <= 0)
                 Console.Write("Некоректна кількість. Спробуйте ще раз: ");
-                input = Console.ReadLine();
-            }
 
             int[] numbers = new int[count];
-
             for (int i = 0; i < count; i++)
             {
                 Console.Write($"Введіть число {i + 1}: ");
                 while (!int.TryParse(Console.ReadLine(), out numbers[i]))
-                {
                     Console.Write("Це не число. Спробуйте ще раз: ");
-                }
             }
 
             int sum = 0;
-
             foreach (int number in numbers)
-            {
                 sum += number;
-            }
 
             Console.WriteLine($"Сума: {sum}");
         }
@@ -143,15 +122,10 @@ namespace From_Zero_to_Robert_De_Niro
             Console.Write("Введіть ім’я: ");
             string name = Console.ReadLine();
             string reversed = "";
-
             for (int i = name.Length - 1; i >= 0; i--)
-            {
                 reversed += name[i];
-            }
-
             Console.WriteLine("Задом наперед: " + reversed);
         }
-
 
         static void RunBinarySearch()
         {
@@ -159,9 +133,9 @@ namespace From_Zero_to_Robert_De_Niro
             {
                 new int[] { 1, 3, 5, 7, 9 },
                 new int[] { -10, -5, 0, 5, 10, 15 },
-                new int[] { 2, 4, 6, 8, 10, 12, 14, 16 },
+                new int[] { 2, 4, 6, 8, 10 },
                 new int[] { 50, 100, 150, 200 },
-                new int[] { -20, -10, 0, 10, 20, 30, 40, 50, 60 }
+                new int[] { -20, -10, 0, 10, 20 }
             };
 
             Console.WriteLine("Оберіть масив:");
@@ -195,18 +169,15 @@ namespace From_Zero_to_Robert_De_Niro
                     input[i] = Console.ReadLine();
                 }
             }
-             
 
             Array.Sort(array);
             Console.Write("Введіть число для пошуку: ");
             int target;
             while (!int.TryParse(Console.ReadLine(), out target))
-            {
                 Console.Write("Це не число. Спробуйте ще раз: ");
 
-                int result = BinarySearchAlgorithm(array, target);
-                Console.WriteLine(result != -1 ? $"Знайдено на позиції {result}." : "Елемент не знайдено.");
-            }
+            int result = BinarySearchAlgorithm(array, target);
+            Console.WriteLine(result != -1 ? $"Знайдено на позиції {result}." : "Елемент не знайдено.");
         }
 
         static int BinarySearchAlgorithm(int[] array, int target)
@@ -250,38 +221,96 @@ namespace From_Zero_to_Robert_De_Niro
                         Console.Write("Введіть ім’я: ");
                         string search = Console.ReadLine();
                         if (contacts.ContainsKey(search))
+                        {
                             Console.WriteLine($"{search}: {contacts[search]}");
+                        }
                         else
+                        {
                             Console.WriteLine("Контакт не знайдено.");
-                        break;
-
+                        }
+                            break;
+                        
                     case "3":
                         if (contacts.Count == 0)
+                        {
                             Console.WriteLine("Список порожній.");
+                        }
+
                         else
+                        {
                             foreach (var pair in contacts)
                                 Console.WriteLine($"{pair.Key}: {pair.Value}");
+                        }
                         break;
 
                     case "4":
                         Console.Write("Введіть ім’я: ");
                         string del = Console.ReadLine();
                         if (contacts.Remove(del))
+                        {
                             Console.WriteLine("Контакт видалено.");
+                        }
                         else
+                        {
                             Console.WriteLine("Контакт не знайдено.");
+                        }
                         break;
 
                     case "0": return;
 
                     default:
-                        Console.WriteLine("Невірний вибір.");
+                        {
+                            Console.WriteLine("Невірний вибір.");
+                        }
                         break;
                 }
             }
         }
+
+        //  New Functions
+
+        static void ManageTasks()
+        {
+            Console.WriteLine("\n--- List of tasks ---");
+            Console.WriteLine("Current tasks:");
+            foreach (var task in tasks)
+                Console.WriteLine($"- {task}");
+
+            Console.Write("Enter the name or part of the name of the task to search for: ");
+            string input = Console.ReadLine();
+
+            Console.Write("Search for a partial match? (yes/no): ");
+            string partial = Console.ReadLine().Trim().ToLower();
+
+            List<string> results = partial == "yes"
+                ? FindTask(tasks, input, true)
+                : FindTask(tasks, input);
+
+            if (results.Count > 0)
+            {
+                Console.WriteLine("\nFound tasks:");
+                foreach (var result in results)
+                    Console.WriteLine($"- {result}");
+            }
+            else
+            {
+                Console.WriteLine("Task not found.");
+            }
+        }
+
+        
+        static List<string> FindTask(List<string> tasks, string name)
+        {
+            return tasks.Where(t => t.Equals(name, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        static List<string> FindTask(List<string> tasks, string name, bool partialMatch)
+        {
+            return tasks.Where(t => t.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+        }
     }
 }
+
         
 
 
